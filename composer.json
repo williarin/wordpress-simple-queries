@@ -1,0 +1,41 @@
+{
+    "name": "williarin/simple-queries",
+    "description": "Query the database using WordpressInterop library",
+    "license": "gpl-3.0",
+    "type": "wordpress-plugin",
+    "authors": [
+        {
+            "name": "William Arin",
+            "email": "williamarin.dev@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "typisttech/imposter-plugin": "^0.6.2",
+        "williarin/wordpress-interop": "^1.9.0"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest",
+        "ergebnis/composer-normalize": "^2.28"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Williarin\\SimpleQueries\\": "src/"
+        },
+        "files": [
+            "vendor/symfony/string/Resources/functions.php"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "typisttech/imposter-plugin": true
+        }
+    },
+    "extra": {
+        "imposter": {
+            "namespace": "Williarin\\SimpleQueries\\Vendor"
+        }
+    }
+}

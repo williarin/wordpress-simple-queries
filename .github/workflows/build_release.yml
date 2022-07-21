@@ -1,0 +1,88 @@
+name: Build and release
+
+on:
+    push:
+        branches:
+            - master
+        tags:
+            - '**'
+        paths-ignore:
+            - '**/README.md'
+    pull_request:
+        branches:
+            - master
+        paths-ignore:
+            - '**/README.md'
+    workflow_dispatch:
+
+jobs:
+    build:
+        name: Build
+        runs-on: ubuntu-22.04
+        outputs:
+            PLUGIN_VERSION: ${{ steps.plugin_version.outputs.PLUGIN_VERSION }}
+        steps:
+            -   uses: actions/checkout@v2
+            -   uses: FranzDiebold/github-env-vars-action@v2
+
+            -   name: Setup PHP
+                id: setup-php
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.0'
+                    extensions: dom, curl, libxml, mbstring, zip
+                    tools: composer:v2
+
+            -   name: Install dependencies
+                run: composer install --no-dev --no-interaction --optimize-autoloader
+
+            -   name: Plugin version
+                id: plugin_version
+                if: startsWith(github.ref, 'refs/tags/')
+                run: echo "::set-output name=PLUGIN_VERSION::$CI_REF_NAME-interop-$(composer show | grep 'williarin/wordpress-interop' | awk '{print $2}')"
+
+            -   name: Find and Replace
+                if: startsWith(github.ref, 'refs/tags/')
+                uses: jacobtomlinson/gha-find-replace@v2
+                with:
+                    include: simple-queries.php
+                    find: "{plugin-version}"
+                    replace: ${{ steps.plugin_version.outputs.PLUGIN_VERSION }}
+                    regex: false
+
+            -   uses: actions/upload-artifact@v3
+                if: startsWith(github.ref, 'refs/tags/')
+                with:
+                    name: simple-queries
+                    path: |
+                        ./
+                        !./.git*
+                        !./composer.*
+
+    release:
+        if: startsWith(github.ref, 'refs/tags/')
+        needs: [ build ]
+        name: Release
+        runs-on: ubuntu-22.04
+        steps:
+            -   uses: FranzDiebold/github-env-vars-action@v2
+
+            -   name: Download artifact
+                uses: actions/download-artifact@v3
+                with:
+                    name: simple-queries
+
+            -   name: Set artifact name
+                id: artifact
+                run: echo ::set-output name=ARTIFACT::simple-queries-${{ needs.build.outputs.PLUGIN_VERSION }}.zip
+
+            -   name: Create release zip file
+                run: zip -rq9 ${{ steps.artifact.outputs.ARTIFACT }} ./*
+
+            -   name: Create release
+                uses: marvinpinto/action-automatic-releases@latest
+                with:
+                    repo_token: ${{ secrets.GITHUB_TOKEN }}
+                    title: ${{ needs.build.outputs.PLUGIN_VERSION }}
+                    prerelease: false
+                    files: ./${{ steps.artifact.outputs.ARTIFACT }}
