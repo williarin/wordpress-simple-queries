@@ -3,7 +3,7 @@ Contributors: williarin
 Tags: database, query, dbal, oop
 Requires at least: 5.6
 Tested up to: 6.0.1
-Stable tag: 1.0.0-interop-1.10.0
+Stable tag: {plugin-version}
 Requires PHP: 8.0
 License: GPL-3.0
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -68,5 +68,5 @@ This plugin uses Doctrine DBAL and you can easily extend the query builder if yo
 
 == Changelog ==
 
-= 1.0.0-interop-1.10.0 =
+= 1.0.0.1.10.0 =
 * Initial release featuring WordpressInterop 1.10.0
