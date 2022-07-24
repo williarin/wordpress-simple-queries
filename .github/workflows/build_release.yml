@@ -39,7 +39,7 @@ jobs:
             -   name: Plugin version
                 id: plugin_version
                 if: startsWith(github.ref, 'refs/tags/')
-                run: echo "::set-output name=PLUGIN_VERSION::$CI_REF_NAME-interop-$(composer show | grep 'williarin/wordpress-interop' | awk '{print $2}')"
+                run: echo "::set-output name=PLUGIN_VERSION::$CI_REF_NAME.$(composer show | grep 'williarin/wordpress-interop' | awk '{print $2}')"
 
             -   name: Find and Replace
                 if: startsWith(github.ref, 'refs/tags/')
