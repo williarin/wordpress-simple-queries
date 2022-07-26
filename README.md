@@ -6,17 +6,17 @@ This WordPress plugin integrates [williarin/wordpress-interop](https://github.co
 
 ## Requirements
 
-You must have WordPress running on PHP 8.0 or later, so WordPress 5.6 or later.
+You must have WordPress 5.6 or later running on PHP 8.0 or later.
 
 ## Installation
 
-### WordPress
-
-Install it through WordPress admin → Plugins → New → Simple Queries.
-
-### Filesystem
-
 Download the latest release on this page and extract it in `yourproject/wp-content/plugins/simple-queries/`.
+
+**Warning:** WordPress Plugin Directory doesn't host plugins made for developers anymore.
+This is to avoid that an admin user deactivate or delete the plugin as he doesn't see the use of it.
+
+Ideally, you would require the library directly using composer, so you wouldn't have to install this plugin.
+However, there are some cases where this plugin might come in useful, particularly if you don't have composer in your WordPress installation.
 
 ## Usage
 

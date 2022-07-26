@@ -65,8 +65,3 @@ No. You can directly use it in your code.
 
 You can write complex queries with a simple syntax which looks like Doctrine ORM, although it's not an ORM.
 This plugin uses Doctrine DBAL and you can easily extend the query builder if you're familiar with DBAL.
-
-== Changelog ==
-
-= 1.0.0.1.10.0 =
-* Initial release featuring WordpressInterop 1.10.0
