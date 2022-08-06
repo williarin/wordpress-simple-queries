@@ -4,8 +4,8 @@ on:
     push:
         branches:
             - master
-        tags:
-            - '**'
+        tags-ignore:
+            - 'latest'
         paths-ignore:
             - '**/README.md'
     pull_request:
@@ -78,6 +78,7 @@ jobs:
                 uses: marvinpinto/action-automatic-releases@latest
                 with:
                     repo_token: ${{ secrets.GITHUB_TOKEN }}
+                    automatic_release_tag: 'latest'
                     title: ${{ needs.build.outputs.PLUGIN_VERSION }}
                     prerelease: false
                     files: ./${{ steps.artifact.outputs.ARTIFACT }}
